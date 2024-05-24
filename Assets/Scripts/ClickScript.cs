@@ -12,6 +12,9 @@ public class ClickScript : MonoBehaviour
 
     public TextMeshProUGUI titleText;
     public TextMeshProUGUI infoText;
+    public GameObject infoPanel;
+    public Button closeButton;
+
 
     // Start is called before the first frame update
     void Start()
@@ -67,6 +70,18 @@ public class ClickScript : MonoBehaviour
             Debug.Log("Info Text component found.");
         }
 
+        infoPanel = panel.gameObject;
+        closeButton = panel.Find("CloseButton").GetComponent<Button>();
+
+        if (closeButton != null)
+        {
+            closeButton.onClick.AddListener(CloseInfoPanel);
+            renderer.material.color = Color.white;
+
+        }
+
+        // Initially hide the info panel
+        infoPanel.SetActive(false);
 
     }
 
@@ -124,6 +139,7 @@ public class ClickScript : MonoBehaviour
                 {
                     ToggleColor();
                     UpdateText();
+                    OpenInfoPanel();
                 }
             }
         }
@@ -156,15 +172,30 @@ public class ClickScript : MonoBehaviour
         // Customize the info text based on the type of object
         if (gameObject.name.Contains("Cube"))
         {
-            infoText.text = "Floor: 1\nRoom: Lecture room\nTemperature: 22°C\nISO quality: High";
+            infoText.text = "Floor: 1\n\nRoom: Lecture room\n\nTemperature: 22°C\n\nISO quality: High";
         }
         else if (gameObject.name.Contains("Sphere"))
         {
-            infoText.text = "Floor: 2\nRoom: Meeting room\nTemperature: 20°C\nISO quality: Medium";
+            infoText.text = "Floor: 2\n\nRoom: Meeting room\n\nTemperature: 20°C\n\nISO quality: Medium";
         }
         else
         {
-            infoText.text = "Floor: Unknown\nRoom: Unknown\nTemperature: Unknown\nISO quality: Unknown";
+            infoText.text = "Floor: Unknown\n\nRoom: Unknown\n\nTemperature: Unknown\n\nISO quality: Unknown";
+        }
+    }
+    private void OpenInfoPanel()
+    {
+        if (infoPanel != null)
+        {
+            infoPanel.SetActive(true);
+        }
+    }
+
+    private void CloseInfoPanel()
+    {
+        if (infoPanel != null)
+        {
+            infoPanel.SetActive(false);
         }
     }
 }
